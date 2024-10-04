@@ -1,12 +1,12 @@
 package teste.mateus.controlecaixa.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-import teste.mateus.controlecaixa.controller.dtos.caixa.CriarCaixaDto;
 import teste.mateus.controlecaixa.controller.dtos.caixa.AtualizarCaixaDto;
+import teste.mateus.controlecaixa.controller.dtos.caixa.CriarCaixaDto;
 import teste.mateus.controlecaixa.controller.dtos.caixa.RespostaCaixaDto;
 import teste.mateus.controlecaixa.entity.Caixa;
 import teste.mateus.controlecaixa.exception.BusinessException;
+import teste.mateus.controlecaixa.exception.EntityNotFoundException;
 import teste.mateus.controlecaixa.exception.ResourceNotFoundException;
 import teste.mateus.controlecaixa.repository.CaixaRepository;
 
@@ -37,7 +37,7 @@ public class CaixaService {
 
   public Caixa buscarPorId(Long id) {
     return repository.findById(id)
-      .orElseThrow(() -> new EntityNotFoundException("Caixa não encontrada com id: " + id));
+      .orElseThrow(() -> new EntityNotFoundException("Caixa não encontrado com id: " + id));
   }
 
   //  public void buscarPorDescricao(String descricao) {
