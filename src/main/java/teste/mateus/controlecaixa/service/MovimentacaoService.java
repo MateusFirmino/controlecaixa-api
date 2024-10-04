@@ -55,8 +55,13 @@ public class MovimentacaoService {
     Long caixaId,
     LocalDate dtInicial,
     LocalDate dtFinal,
-    Pageable pageable) {
-    Page<Movimentacao> movimentacoesPaginadas = movimentacaoRepository.findByCaixaIdAndDataBetween(caixaId, dtInicial, dtFinal, pageable);
+    Pageable pageable
+  ) {
+    if (dtInicial.isAfter(dtFinal)) {
+      throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
+    }
+    Page<Movimentacao> movimentacoesPaginadas = movimentacaoRepository
+      .findByCaixaIdAndDataBetween(caixaId, dtInicial, dtFinal, pageable);
     return movimentacoesPaginadas.map(RespostaMovIntervaloDto::toDto);
   }
 
@@ -67,6 +72,10 @@ public class MovimentacaoService {
     LocalDate dtInicial,
     LocalDate dtFinal
   ) {
+    if (dtInicial.isAfter(dtFinal)) {
+      throw new IllegalArgumentException("A data inicial não pode ser posterior à data final.");
+    }
+
     List<Movimentacao> movimentacoes = movimentacaoRepository.findByCaixaIdAndDataBetween(caixaId, dtInicial, dtFinal);
 
     BigDecimal totalEntradas = BigDecimal.ZERO;
@@ -79,7 +88,7 @@ public class MovimentacaoService {
       }
     }
     final var saldo = totalEntradas.subtract(totalSaidas);
-    return  RespostaBalancoDto.toDto(totalEntradas,totalSaidas,saldo);
+    return RespostaBalancoDto.toDto(totalEntradas, totalSaidas, saldo);
   }
 
   @Transactional
