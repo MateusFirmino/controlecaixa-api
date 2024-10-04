@@ -1,15 +1,15 @@
-package teste.mateus.controlecaixa.controller.dtos;
+package teste.mateus.controlecaixa.controller.dtos.movimentacao;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import teste.mateus.controlecaixa.entity.Caixa;
+import teste.mateus.controlecaixa.controller.dtos.caixa.RespostaCaixaDto;
 import teste.mateus.controlecaixa.entity.Movimentacao;
 import teste.mateus.controlecaixa.entity.Tipo;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record RespostaMovimentacaoDto(
-  @JsonFormat(pattern = "dd/MM/yyyy") LocalDateTime data, Tipo tipo, RespostaCaixaDto caixa,
+  @JsonFormat(pattern = "dd/MM/yyyy") LocalDate data, Tipo tipo, RespostaCaixaDto caixa,
   String descricao,
   BigDecimal valor
 ) {

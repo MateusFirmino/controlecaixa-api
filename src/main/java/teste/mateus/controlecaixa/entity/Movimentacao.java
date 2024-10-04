@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import teste.mateus.controlecaixa.controller.dtos.CriarMovimentacaoDto;
+import teste.mateus.controlecaixa.controller.dtos.movimentacao.CriarMovimentacaoDto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_movimentacoes")
@@ -25,27 +25,31 @@ public class Movimentacao {
   private Long id;
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "UTC")
-  private LocalDateTime data;
+  @Column(name = "data")
+  private LocalDate data;
 
   @Enumerated(EnumType.STRING)
+  @Column(name = "tipo")
   private Tipo tipo;
 
-  @ManyToOne
-  @JoinColumn(name = "caixa_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "caixa_id", nullable = false)
   private Caixa caixa;
 
+  @Column(name = "descricao",nullable = false)
   private String descricao;
 
-  @Column(nullable = false)
+  @Column(name = "valor",nullable = false)
   private BigDecimal valor;
 
   public Movimentacao(CriarMovimentacaoDto movimentacaoDto) {
-    this.data = LocalDateTime.now();
+    this.data = LocalDate.now();
     this.caixa = movimentacaoDto.caixa();
     this.descricao = movimentacaoDto.descricao();
     this.valor = movimentacaoDto.valor();
     this.tipo = movimentacaoDto.tipo();
   }
+
 
 
 }
