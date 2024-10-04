@@ -6,13 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import teste.mateus.controlecaixa.controller.dtos.movimentacao.CriarMovimentacaoDto;
+import teste.mateus.controlecaixa.controller.dtos.movimentacao.RespostaMovimentacaoDto;
 import teste.mateus.controlecaixa.controller.dtos.relatorios.RespostaBalancoDto;
 import teste.mateus.controlecaixa.controller.dtos.relatorios.RespostaMovIntervaloDto;
-import teste.mateus.controlecaixa.controller.dtos.movimentacao.RespostaMovimentacaoDto;
 import teste.mateus.controlecaixa.entity.Movimentacao;
+import teste.mateus.controlecaixa.exception.IllegalArgumentException;
 import teste.mateus.controlecaixa.repository.CaixaRepository;
 import teste.mateus.controlecaixa.repository.MovimentacaoRepository;
-import teste.mateus.controlecaixa.exception.IllegalArgumentException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,8 +34,8 @@ public class MovimentacaoService {
     var validarCaixa = caixaService.buscarPorId(criarMovimentacaoDto.caixa().getId());
 
     switch (criarMovimentacaoDto.tipo()) {
-      case S -> validarCaixa.removerValor(criarMovimentacaoDto.valor());
-      case E -> validarCaixa.adicionarValor(criarMovimentacaoDto.valor());
+      case SAIDA -> validarCaixa.removerValor(criarMovimentacaoDto.valor());
+      case ENTRADA -> validarCaixa.adicionarValor(criarMovimentacaoDto.valor());
       default -> throw new IllegalArgumentException("Tipo de movimentação inválido.");
     }
     caixaRepository.save(validarCaixa);
@@ -74,8 +74,8 @@ public class MovimentacaoService {
 
     for (Movimentacao mov : movimentacoes) {
       switch (mov.getTipo()) {
-        case E -> totalEntradas = totalEntradas.add(mov.getValor());
-        case S -> totalSaidas = totalSaidas.add(mov.getValor());
+        case ENTRADA -> totalEntradas = totalEntradas.add(mov.getValor());
+        case SAIDA -> totalSaidas = totalSaidas.add(mov.getValor());
       }
     }
     final var saldo = totalEntradas.subtract(totalSaidas);
