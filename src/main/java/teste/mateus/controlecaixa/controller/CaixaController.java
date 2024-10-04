@@ -1,6 +1,6 @@
 package teste.mateus.controlecaixa.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,11 +19,11 @@ import teste.mateus.controlecaixa.service.CaixaService;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/caixa")
 public class CaixaController {
 
-  @Autowired
-  private CaixaService caixaService;
+  private final CaixaService caixaService;
 
   @PostMapping
   public ResponseEntity<Caixa> criarCaixa(@RequestBody CriarCaixaDto caixa) {

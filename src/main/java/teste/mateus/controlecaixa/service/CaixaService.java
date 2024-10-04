@@ -28,19 +28,23 @@ public class CaixaService {
     return this.repository.findAll();
   }
 
+  public Caixa buscarPorId(Long id) {
+    return repository.findById(id)
+      .orElseThrow(() -> new EntityNotFoundException("Caixa não encontrada com id: " + id));
+  }
+
   public Caixa editar(Long id, AtualizarCaixaDto atualizarCaixaDto) {
-    return repository.findById(id).map(caixa -> {
-      caixa.setDescricao(atualizarCaixaDto.descricao());
-      caixa.setSaldoInicial(atualizarCaixaDto.saldoInicial());
-      return repository.save(caixa);
-    }).orElseThrow(() -> new EntityNotFoundException("Caixa não encontrada com id: " + id));
+    Caixa novoCaixa = this.buscarPorId(id);
+    novoCaixa.setSaldoInicial(atualizarCaixaDto.saldoInicial());
+    novoCaixa.setDescricao(atualizarCaixaDto.descricao());
+    return this.repository.save(novoCaixa);
   }
 
   public void deletar(Long id) {
     if (repository.existsById(id)) {
       repository.deleteById(id);
     } else {
-      throw new EntityNotFoundException("Caixa não encontrada com id: " + id);
+      throw new EntityNotFoundException("Caixa não encontrado com id: " + id);
     }
   }
 

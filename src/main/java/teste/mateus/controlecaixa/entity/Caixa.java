@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import teste.mateus.controlecaixa.controller.dtos.CriarCaixaDto;
+import teste.mateus.controlecaixa.controller.dtos.CriarMovimentacaoDto;
 
 import java.math.BigDecimal;
 
@@ -31,6 +32,23 @@ public class Caixa {
   public Caixa (CriarCaixaDto dto) {
     this.descricao = dto.descricao();
     this.saldoInicial = dto.saldoInicial();
+  }
+
+  public void adicionarValor (BigDecimal valor) {
+    this.saldoInicial = this.saldoInicial.add(valor);
+  }
+
+  public void removerValor (BigDecimal valor) {
+    verificaSaldoInsuficiente(valor);
+    this.saldoInicial = this.saldoInicial.subtract(valor);
+  }
+
+  private void verificaSaldoInsuficiente(
+    BigDecimal valor
+  ) {
+    if (this.saldoInicial.compareTo(valor) < 0) {
+      throw new IllegalArgumentException("Saldo insuficiente no caixa para realizar a saída.");
+    }
   }
 
 }
