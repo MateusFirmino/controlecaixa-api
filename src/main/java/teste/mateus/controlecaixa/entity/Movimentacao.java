@@ -2,11 +2,21 @@ package teste.mateus.controlecaixa.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import teste.mateus.controlecaixa.controller.dtos.CriarMovimentacaoDto;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_movimentacoes")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Movimentacao {
 
   @Id
@@ -28,6 +38,14 @@ public class Movimentacao {
 
   @Column(nullable = false)
   private BigDecimal valor;
+
+  public Movimentacao(CriarMovimentacaoDto movimentacaoDto) {
+    this.data = LocalDateTime.now();
+    this.caixa = movimentacaoDto.caixa();
+    this.descricao = movimentacaoDto.descricao();
+    this.valor = movimentacaoDto.valor();
+    this.tipo = movimentacaoDto.tipo();
+  }
 
 
 }
