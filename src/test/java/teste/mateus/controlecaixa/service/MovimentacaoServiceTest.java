@@ -88,7 +88,7 @@ class MovimentacaoServiceTest {
     assertEquals(new BigDecimal("50"), balanco.saldo());
 
     verify(movimentacaoRepository, times(1))
-      .findByCaixaIdAndDataBetween(caixaId, dtInicial, dtFinal);  // Verifica se o repositório foi chamado corretamente
+      .findByCaixaIdAndDataBetween(caixaId, dtInicial, dtFinal);
   }
 
   @Test
